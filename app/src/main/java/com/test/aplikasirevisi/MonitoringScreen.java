@@ -124,7 +124,6 @@ public class MonitoringScreen extends Activity {
     }
     private class ReadInput implements  Runnable{
         private boolean bStop = false;
-        private boolean bStop2 = false;
         private Thread t;
 
         public ReadInput() {
@@ -180,104 +179,27 @@ public class MonitoringScreen extends Activity {
                         System.out.println(number);
 
 
-//                        int count = 0;
-//                        while (!bStop2){
-//                            if(number <lo){
-//                                if(count>30){
-//                                    showAlertDialogWithAutoDismiss();
-//                                    break;
-//                                }
-//                                count++;
-//                            }
-//                            if(number > lo && number<hi){
-//                                count=0;
-//                            }
-//                            if(number>hi){
-//
-//                                if(count>30){
-//                                    showAlertDialogWithAutoDismiss();
-//                                    break;
-//                                }
-//                                count++;
-//                            }
-//                        }
-
-//                        j.schedule(new java.util.TimerTask() {
-//                            @Override
-//                            public void run() {
-//                                MonitoringScreen.this.runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                            if(number<lo){
-//                                                showAlertDialogWithAutoDismiss();
-//                                                j.cancel();
-//                                            }else if(number>lo && number<hi){
-//                                                System.out.println("Ok");
-//                                            }else if(number>hi){
-//                                                showAlertDialogWithAutoDismiss();
-//                                                j.cancel();
-//                                            }
-//
-//                                    }
-//                                });
-//
-//                                };
-//                            },5000
-//                        );
-
                         /*
                          * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
                          */
 
                         if (chkReceiveText.isChecked()) {
-//                            mTxtReceive.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    mTxtReceive.append(strInput);
-//
-//                                    int txtLength = mTxtReceive.getEditableText().length();
-//                                    if(txtLength > mMaxChars){
-//                                        mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
-//                                        Log.d(TAG, "text longer than allowed:" + mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars));
-//                                    }
-//
-//                                    if (chkScroll.isChecked()) { // Scroll only if this is checked
-//                                        scrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
-//                                            @Override
-//                                            public void run() {
-//                                                scrollView.fullScroll(View.FOCUS_DOWN);
-//                                            }
-//                                        });
-//                                    }
-//                                }
-//                            });
-
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     mTxtReceive.setText(String.valueOf(strInput));
                                 }
                             });
-
-
-
                         }
-
-
                     }
-
                     Thread.sleep(500);
-
                 }
 
 
 
 
 
-            } catch (IOException e) {
-// TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -289,6 +211,7 @@ public class MonitoringScreen extends Activity {
         }
 
     }
+    @SuppressLint("StaticFieldLeak")
     private class DisConnectBT extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -421,6 +344,7 @@ public class MonitoringScreen extends Activity {
             public void run() {
                 if (alertDialog.isShowing()){
                     alertDialog.dismiss();
+                    checkBpm();
                 }
             }
         }, 5000); //change 5000 with a specific time you want
